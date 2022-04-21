@@ -19,7 +19,11 @@ const server = Deno.listen({ port: parseInt(Deno.env.get('PORT') ?? '8080') });
 console.log("Server running on port " + (Deno.env.get('PORT') ?? '8080'));
 
 for await (const conn of server) {
-    serveHTTP(conn);
+    try {
+        serveHTTP(conn);
+    } catch(e) {
+        console.error("An error occurred:", e);
+    }
 }
 
 async function serveHTTP(conn: Deno.Conn) {
@@ -33,7 +37,6 @@ async function respond(req: Deno.RequestEvent) {
     const url = new URL(req.request.url);
     const match = url.pathname.match(/\/(.*?)\/(.*)/);
     if(match) {
-        console.log(match);
         const entry = await redis.get(`${match[1]}/${match[2]}`);
         let date = new Date();
         date.setDate(date.getDate() - 1);
@@ -48,7 +51,6 @@ async function respond(req: Deno.RequestEvent) {
             }));
             return;
         }
-        console.log("Loading from cache");
         req.respondWith(new Response(JSON.stringify(JSON.parse(entry).languages), {status: 200, headers: {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*',
