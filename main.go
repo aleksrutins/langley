@@ -33,7 +33,7 @@ func main() {
 	app.Get("/:user/:repo", func(c *fiber.Ctx) error {
 		user := c.Params("user")
 		repo := c.Params("repo")
-		entry, err := rdb.Get(ctx, user).Result()
+		entry, err := rdb.Get(ctx, fmt.Sprintf("%s/%s", user, repo)).Result()
 		if err != nil {
 			res, err := http.Get(fmt.Sprintf("https://api.github.com/repos/%s/%s/languages", user, repo))
 			if err == nil {
@@ -48,7 +48,7 @@ func main() {
 				}
 			}
 		}
-		if err != nil {
+		if err == nil {
 			return c.SendString(entry)
 		} else {
 			return errors.New("error fetching data")
