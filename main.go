@@ -11,6 +11,7 @@ import (
 
 	"github.com/go-redis/redis/v8"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/joho/godotenv"
 )
 
@@ -26,6 +27,8 @@ func main() {
 	rdb := redis.NewClient(redisOpts)
 
 	app := fiber.New()
+
+	app.Use(cors.New())
 
 	app.Get("/:user/:repo", func(c *fiber.Ctx) error {
 		user := c.Params("user")
