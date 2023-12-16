@@ -16,7 +16,6 @@ app.get('/:owner/:repo', async c => {
 
   if(!langs) {
     const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/languages`, { headers: { 'User-Agent': 'langley' } })
-    console.log(await res.text())
     langs = await res.json() as Record<string, number>
   }
 
