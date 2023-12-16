@@ -8,6 +8,10 @@ type Bindings = {
 const app = new Hono<{ Bindings: Bindings }>()
 
 app.get('/:owner/:repo', async c => {
+  // grimacing emoji
+  globalThis.process = {env: c.env} as unknown as NodeJS.Process
+  // end hacks for yaml
+
   const kv = c.env.LANGLEY_CACHE
       , owner = c.req.param('owner'), repo = c.req.param('repo')
       , cachedLangs = await kv.get(`langs:${owner}/${repo}`);
