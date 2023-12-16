@@ -1,6 +1,4 @@
-import { createRequire } from 'node:module'
-const require = createRequire(import.meta.url)
-const YAML = require('yaml')
+import YAML from 'yaml'
 
 let colors: Record<string, { color: string }> | undefined;
 
