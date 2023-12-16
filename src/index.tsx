@@ -24,7 +24,7 @@ app.get('/:owner/:repo', async c => {
       amount: langs?.[lang],
       color: await getLanguageColor(kv, lang)
     }))))
-  } catch(e: any) { return c.json(e, 500) }
+  } catch(e: any) { return c.json({ message: e.toString() }, 500) }
 })
 
 export default app
