@@ -14,8 +14,8 @@ async function getLanguageColors(): Promise<Record<string, { color: string }>> {
 export async function getLanguageColor(kv: KVNamespace, lang: string) {
     let color = await kv.get(`color:${lang}`)
     if(!color) {
-        color = (await getLanguageColors())[lang].color
-        kv.put(`color:${lang}`, color)
+        color = (await getLanguageColors())[lang]?.color
+        if(color) kv.put(`color:${lang}`, color)
     }
     return color
 }
