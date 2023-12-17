@@ -21,6 +21,7 @@ app.get('/:owner/:repo', async c => {
   if(!langs) {
     const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/languages`, { headers: { 'User-Agent': 'langley' } })
     langs = await res.json() as Record<string, number>
+    kv.put(`langs:${owner}/${repo}`, JSON.stringify(langs), { expirationTtl: 60 * 60 * 24 }) // expire in 1 day
   }
 
   return c.json(await Promise.all(Object.keys(langs).map(async lang => ({
