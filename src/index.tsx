@@ -1,6 +1,6 @@
 import { Hono } from 'hono'
+import { cors } from 'hono/cors'
 import { getLanguageColor } from './langs'
-import {cors} from "hono/dist/types/middleware/cors";
 
 type Bindings = {
   LANGLEY_CACHE: KVNamespace
