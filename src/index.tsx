@@ -1,5 +1,6 @@
 import { Hono } from 'hono'
 import { getLanguageColor } from './langs'
+import {cors} from "hono/dist/types/middleware/cors";
 
 type Bindings = {
   LANGLEY_CACHE: KVNamespace
@@ -7,7 +8,7 @@ type Bindings = {
 
 const app = new Hono<{ Bindings: Bindings }>()
 
-app.get('/:owner/:repo', async c => {
+app.get('/:owner/:repo', cors(), async c => {
   // grimacing emoji
   globalThis.process = {env: c.env} as unknown as NodeJS.Process
   // end hacks for yaml
